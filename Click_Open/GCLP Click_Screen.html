@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Google Career Launchpad | DMAI Track</title>
+<style>
+:root{
+  --navy:#102a72; --blue:#4285f4; --red:#ea4335;
+  --yellow:#fbbc05; --green:#34a853; --cyan:#27a9e8;
+  --ink:#14245d; --soft:#eef8ff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#fafdff;color:var(--ink);
+}
+.stage{
+  width:100vw;height:100vh;min-height:560px;
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 78% 29%,rgba(66,133,244,.10),transparent 18%),
+    radial-gradient(circle at 22% 68%,rgba(52,168,83,.07),transparent 17%),
+    linear-gradient(180deg,#fff 0%,#f9fdff 72%,#edf8ff 100%);
+}
+/* Design language borrowed from the supplied poster:
+   soft blue cloud rings, flowing bottom waves, rounded white cards,
+   and restrained Google-colour accents. */
+.cloud{
+  position:absolute;border-radius:50%;
+  border:16px solid rgba(66,133,244,.10);
+  box-shadow:0 0 0 13px rgba(255,255,255,.72),
+             0 0 0 29px rgba(66,133,244,.055);
+  pointer-events:none;
+}
+.cloud.one{width:210px;height:210px;right:-50px;top:118px}
+.cloud.two{width:135px;height:135px;left:-55px;bottom:155px}
+.cloud.three{width:95px;height:95px;right:15%;bottom:78px;border-width:10px;opacity:.7}
+
+.wave{
+  position:absolute;left:-5%;right:-5%;height:125px;bottom:-65px;
+  border-radius:50% 50% 0 0/55% 55% 0 0;
+  transform:rotate(-1deg);
+}
+.wave.blue{background:linear-gradient(100deg,#2f80ed,#42a5f5);bottom:-72px}
+.wave.green{background:linear-gradient(100deg,#22a75a,#65c96f);bottom:-91px;left:-8%;right:61%;height:105px}
+.wave.yellow{background:linear-gradient(100deg,#fbbc05,#ffd64d);bottom:-95px;left:64%;right:-8%;height:95px}
+.wave.red{background:linear-gradient(100deg,#ea4335,#ff7167);bottom:-103px;left:72%;right:-8%;height:58px}
+
+.top{
+  position:absolute;top:4%;left:4%;right:4%;
+  text-align:center;z-index:5;
+}
+.kicker{
+  font-size:clamp(13px,1.2vw,23px);
+  letter-spacing:.30em;color:#71809a;font-weight:600;
+}
+.title{
+  margin-top:2.1%;
+  font-size:clamp(24px,2.65vw,48px);
+  letter-spacing:.035em;font-weight:700;color:#102a72;
+}
+.title span:nth-child(1){color:var(--blue)}
+.title span:nth-child(2){color:var(--red)}
+.title span:nth-child(3){color:var(--yellow)}
+.title span:nth-child(4){color:var(--blue)}
+.title span:nth-child(5){color:var(--green)}
+.title span:nth-child(6){color:var(--red)}
+.track{
+  display:inline-block;margin-top:1.6%;
+  padding:8px 32px;border-radius:28px;
+  background:linear-gradient(90deg,#1e88e5,#7c2bd9);
+  color:white;font-size:clamp(16px,1.6vw,29px);
+  letter-spacing:.22em;font-weight:700;
+  box-shadow:0 7px 22px rgba(66,133,244,.18);
+}
+.main{
+  position:absolute;left:5.2%;right:5.2%;top:31%;bottom:7.5%;
+  border:2px solid rgba(66,133,244,.36);
+  border-radius:30px;background:rgba(255,255,255,.92);
+  box-shadow:0 14px 45px rgba(33,91,155,.10);
+  z-index:3;padding:2.4% 2.4%;
+}
+.main:before{
+  content:"";position:absolute;inset:16px;border:1px solid #cfeaf8;
+  border-radius:22px;pointer-events:none;
+}
+.instruction{
+  text-align:center;position:relative;z-index:4;
+  font-size:clamp(16px,1.6vw,29px);font-weight:700;
+  color:#33446d;letter-spacing:.07em;
+}
+.points{
+  position:absolute;left:7%;right:7%;top:28%;bottom:11%;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:3%;align-items:center;
+}
+.item{text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px}
+.point{
+  width:min(15.5vw,220px);aspect-ratio:1;border-radius:50%;
+  border:2px solid #55b6ed;background:
+    radial-gradient(circle at 50% 45%,#ffffff 0%,#eef9ff 57%,#e1f2fb 100%);
+  position:relative;display:grid;place-items:center;cursor:pointer;
+  box-shadow:0 7px 22px rgba(45,139,203,.13);
+  transition:.3s ease;
+}
+.point:before,.point:after{
+  content:"";position:absolute;border-radius:50%;
+  border:1px solid rgba(66,133,244,.28);
+}
+.point:before{inset:13%}.point:after{inset:27%}
+.number{font-size:clamp(29px,3.2vw,58px);font-weight:500;color:#183d82;z-index:2}
+.letter{
+  font-size:clamp(13px,1.25vw,23px);font-weight:800;
+  letter-spacing:.38em;padding-left:.38em;color:#66738c;
+}
+.point:hover,.point.active{transform:translateY(-6px) scale(1.04)}
+.item:nth-child(1) .point.active{border-color:var(--blue);box-shadow:0 0 0 8px rgba(66,133,244,.10),0 12px 34px rgba(66,133,244,.25)}
+.item:nth-child(2) .point.active{border-color:var(--red);box-shadow:0 0 0 8px rgba(234,67,53,.10),0 12px 34px rgba(234,67,53,.22)}
+.item:nth-child(3) .point.active{border-color:var(--yellow);box-shadow:0 0 0 8px rgba(251,188,5,.12),0 12px 34px rgba(251,188,5,.22)}
+.item:nth-child(4) .point.active{border-color:var(--green);box-shadow:0 0 0 8px rgba(52,168,83,.10),0 12px 34px rgba(52,168,83,.22)}
+.item:nth-child(1) .letter.active{color:var(--blue)}
+.item:nth-child(2) .letter.active{color:var(--red)}
+.item:nth-child(3) .letter.active{color:#d89b00}
+.item:nth-child(4) .letter.active{color:var(--green)}
+
+.status{
+  position:absolute;bottom:3.2%;left:50%;transform:translateX(-50%);
+  display:flex;gap:9px;align-items:center;
+  color:#7b8799;font-size:11px;letter-spacing:.15em;
+  text-transform:uppercase;white-space:nowrap;z-index:5;
+}
+.dot{width:7px;height:7px;border-radius:50%;background:#a5afbc}
+.status.ready .dot{background:var(--green);box-shadow:0 0 9px rgba(52,168,83,.65)}
+
+.google-bars{
+  position:absolute;top:3%;left:3%;display:flex;gap:5px;z-index:6;
+}
+.google-bars i{width:24px;height:5px;border-radius:8px}
+.b{background:var(--blue)}.r{background:var(--red)}.y{background:var(--yellow)}.g{background:var(--green)}
+
+@media(max-width:900px){
+  .main{top:30%;left:3%;right:3%}
+  .points{left:4%;right:4%}
+  .point{width:17vw}
+}
+
+.activation-video{
+  position:absolute;
+  inset:18px;
+  z-index:20;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border-radius:22px;
+  background:rgba(255,255,255,.96);
+}
+
+/* The frame is sized to the video's natural aspect ratio.
+   It does not stretch to fill the entire activation panel. */
+.activation-video.show{
+  display:flex;
+}
+
+/* Border around the video itself. The video remains fully visible. */
+.activation-video video{
+  display:block;
+  width:auto;
+  height:auto;
+  max-width:100%;
+  max-height:100%;
+  aspect-ratio:auto;
+  object-fit:contain;
+  object-position:center center;
+  border:4px solid #4285f4;
+  border-radius:18px;
+  background:#000;
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,.95),
+    0 12px 35px rgba(33,91,155,.20);
+}
+
+
+.main:has(.activation-video.show) .instruction,
+.main:has(.activation-video.show) .points,
+.main:has(.activation-video.show) .status{
+  visibility:hidden;
+}
+
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="google-bars"><i class="b"></i><i class="r"></i><i class="y"></i><i class="g"></i></div>
+
+  <div class="cloud one"></div>
+  <div class="cloud two"></div>
+  <div class="cloud three"></div>
+
+  <div class="wave blue"></div>
+  <div class="wave green"></div>
+  <div class="wave yellow"></div>
+  <div class="wave red"></div>
+
+  <header class="top">
+    <div class="kicker">DIGITAL INAUGURATION</div>
+    <div class="title">
+      <span>G</span><span>O</span><span>O</span><span>G</span><span>L</span><span>E</span>
+      CAREER LAUNCHPAD PROGRAM <span style="color:#102a72">| ROLL-OUT 2026</span>
+    </div>
+    <div class="track">DMAI TRACK</div>
+  </header>
+
+  <main class="main">
+    <div class="instruction">TOUCH THE ACTIVE-POINTS TO ACTIVATE</div>
+
+    <section class="points">
+      <div class="item"><button class="point"><span class="number">01</span></button><div class="letter">D</div></div>
+      <div class="item"><button class="point"><span class="number">02</span></button><div class="letter">M</div></div>
+      <div class="item"><button class="point"><span class="number">03</span></button><div class="letter">A</div></div>
+      <div class="item"><button class="point"><span class="number">04</span></button><div class="letter">I</div></div>
+    </section>
+
+    <div class="status" id="status"><span class="dot"></span><span id="statusText">Awaiting Activation</span></div>
+
+    <!-- Video plays once after all four points are activated.
+         The video source is opening.mp4. -->
+    <div class="activation-video" id="activationVideoWrap" aria-hidden="true">
+      <video id="activationVideo" preload="auto" playsinline>
+        <source src="opening.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+      </video>
+    </div>
+  </main>
+</div>
+
+<script>
+const points = document.querySelectorAll('.point');
+const status = document.getElementById('status');
+const statusText = document.getElementById('statusText');
+const activationVideo = document.getElementById('activationVideo');
+const activationVideoWrap = document.getElementById('activationVideoWrap');
+
+let videoPlayedOnce = false;
+
+function fitVideoToNaturalRatio() {
+  if (!activationVideo.videoWidth || !activationVideo.videoHeight) return;
+
+  // Use the video's real dimensions so the border follows its actual shape.
+  const ratio = activationVideo.videoWidth / activationVideo.videoHeight;
+  activationVideo.style.aspectRatio = ratio;
+}
+
+activationVideo.addEventListener('loadedmetadata', fitVideoToNaturalRatio);
+activationVideo.addEventListener('loadeddata', fitVideoToNaturalRatio);
+
+points.forEach(point => {
+  point.addEventListener('click', () => {
+    if (videoPlayedOnce) return;
+
+    point.classList.toggle('active');
+    point.parentElement.querySelector('.letter').classList.toggle('active');
+
+    const activeCount = document.querySelectorAll('.point.active').length;
+
+    if (activeCount === 0) {
+      status.classList.remove('ready');
+      statusText.textContent = 'Awaiting Activation';
+    } else if (activeCount === 4) {
+      status.classList.add('ready');
+      statusText.textContent = 'DMAI Track Activated';
+
+      // All four points are active: show and play opening.mp4 once.
+      videoPlayedOnce = true;
+      activationVideoWrap.classList.add('show');
+      activationVideoWrap.setAttribute('aria-hidden', 'false');
+
+      fitVideoToNaturalRatio();
+      activationVideo.currentTime = 0;
+
+      const playPromise = activationVideo.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          console.warn('Video playback was blocked:', err);
+        });
+      }
+    } else {
+      status.classList.add('ready');
+      statusText.textContent = `${activeCount} / 4 Active`;
+    }
+  });
+});
+
+// Keep the video and its final frame visible after playback.
+activationVideo.addEventListener('ended', () => {
+  activationVideo.pause();
+  fitVideoToNaturalRatio();
+  activationVideoWrap.classList.add('show');
+  activationVideoWrap.setAttribute('aria-hidden', 'false');
+});
+</script>
+</body>
+</html>
